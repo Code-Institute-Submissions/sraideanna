@@ -1,0 +1,32 @@
+#navbarResponsive .navbar-nav li > a {
+    text-transform: uppercase;
+    color: #333;
+    transition: background-color .2s, color .2s;
+}
+
+#navbarResponsive .navbar-nav li > a:hover,
+#navbarResponsive .navbar-nav li > a:focus {
+    background-color: #6e6e6e;
+    color: #fff;
+}
+
+#navbarResponsive .navbar-nav li.active > a.nav-link {
+    background-color: #333;
+    color: #fff;
+}
+
+.header {
+    height: 100vh;
+    min-height: 500px;
+    background-image: url('https://source.unsplash.com/BtbjCFUvBXs/1920x1080');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.content-section {
+    width: 60%;
+    padding: 10px 20px;
+    border-radius: 3px;
+    margin-bottom: 20px;
+}

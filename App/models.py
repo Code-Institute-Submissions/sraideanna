@@ -61,3 +61,29 @@ class User:
         except:
             return None
         return db.users.find_one({'username': username})
+
+
+class Translation:
+
+    def __init__(self, name_ga, date_posted, note, src, username, street_name):
+        self.name_ga = name_ga
+        self.date_posted = date_posted
+        self.note = note
+        self.src = src
+        self.username = username
+        self.street_name = street_name
+
+    def __repr__(self):
+        return f"Translation('{self.name_ga}', '{self.date_posted}', '{self.note}', '{self.src}', '{self.username}', '{self.street_name}')"
+
+    def add_to_db(self):
+        db.streets.update_one({'name_en': self.street_name}, {'$addToSet': {'translations': {
+                              'name_ga': self.name_ga, 'date_posted': self.date_posted, 'note': self.note, 'src': self.src, 'username': self.username, 'street_name': self.street_name}}})
+
+    def update_in_db(self):
+        db.streets.update_one({'name_en': self.street_name, 'translations.username': self.username}, {'$set': {'translations.$.name_ga': self.name_ga,
+                                                                                                               'translations.$.date_posted': self.date_posted, 'translations.$.note': self.note, 'translations.$.src': self.src, 'translations.$.username': self.username}})
+
+    def update_in_user_db(self):
+        db.users.update_one({'username': self.username}, {
+                            '$addToSet': {'translations': {'street_name': self.street_name, 'date_posted': self.date_posted}}})
