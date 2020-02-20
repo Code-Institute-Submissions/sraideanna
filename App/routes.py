@@ -1,10 +1,24 @@
-from flask import render_template
-from App import app
+from flask import render_template, url_for, flash, redirect, request
+from App import app, db
+from App.forms import StreetSelectForm
+from App.models import User
+from flask_login import login_user, current_user, logout_user, login_required
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
+    form = StreetSelectForm()
+    form.select.choices = [(item['name_en'], item['name_en'])
+                           for item in db.streets.find()]
+    if form.validate_on_submit():
+        queryDB = db.streets.find_one({'name_en': form.select.data})
+        street_data = {
+            '_id': str(queryDB['_id']), 'name_en': queryDB['name_en'], 'postcode': queryDB['postcode'], 'translations': queryDB['translations'], 'pos': queryDB['pos']}
+        """ ---------------- """
+        return redirect(url_for('street', street_name=street_data['name_en']))
+    return render_template('home.html', form=form)
 
 
 @app.route('/about')
@@ -18,7 +32,7 @@ def register():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def register():
+def login():
 	return render_template('login.html')
 
 
@@ -48,5 +62,5 @@ def view_profile(user):
 
 
 @app.route('/edit-profile', methods=['GET', 'POST'])
-def edit_profile()
+def edit_profile():
 	return render_template('edit-profile.html')

@@ -1,1 +1,26 @@
-<h1>Sraideanna!</h1>
+{% extends "base.html" %}
+{% block header %}
+<header class="header">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12 text-center">
+                <h1 class="font-weight-light">Sráideanna!</h1>
+                <p class="lead">A collaborative tool for translating the streets of Belfast</p>
+            </div>
+        </div>
+        
+    </div>
+</header>
+{% endblock header %}
+
+{% block content %}
+<div class="container mt-5">
+    <form class="mt-5 text-center" method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.select(class="form-control-lg selectpicker", title="Find a street", data_size="10", data_live_search="true", data_live_search_placeholder="Search here", data_live_search_style="startsWith", data_virtual_scroll="true") }}
+            {{ form.submit(class="btn btn-sm btn-outline-dark mt-1") }}
+        </div>
+    </form>
+</div>
+{% endblock content %}
