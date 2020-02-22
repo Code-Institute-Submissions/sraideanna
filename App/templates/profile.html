@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="container mt-5">
+        <div class="pb-2 mt-4 mb-2 border-bottom">
+            <h1>{{ profile_data.username }}'s Profile</h1>
+        </div> 
+    </div>
+    <!-- General User Profile -->
+    <div class="bg-white shadow rounded overflow-hidden mt-5">
+        <div class="px-4 pt-0 pb-4 bg-dark pt-4">
+            <div class="media align-items-end profile-header">
+                <div class="profile mr-3"><img src="{{ image_file }}" alt="..." width="130" class="rounded mb-2 img-thumbnail"></div>
+                <div class="media-body ml-3 mb-4 text-white">
+                    <h3 class="mt-0 mb-1">{{ profile_data.username }}</h3>
+                    <p class="small mb-2"> <i class="fa fa-map-marker mr-2"></i>{{ profile_data.location.capitalize() }}</p>
+                    <p class="small">Skill level: <span class="badge badge-light">{{ profile_data.level.capitalize() }}</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light p-4 d-flex justify-content-end text-center">
+            <ul class="list-inline mb-0">
+                <li class="list-inline-item">
+                    <h5 class="font-weight-bold mb-0 d-block">{{profile_data.translations|length}}</h5><small class="text-muted"> <i class="fa fa-language mr-1"></i>{{ 'Translation' if profile_data.translations|length == 1 else 'Translations'}}</small>
+                </li>
+            </ul>
+        </div>
+
+        <div class="py-4 px-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h5 class="mb-3">{{ profile_data.username }}'s public bio:</h5>
+            </div>
+            <div class="para-bio mb-5">
+                <lead class="text-muted">{{ profile_data.bio }}</lead>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h5 class="mb-3">Translations added by {{ profile_data.username }}:</h5>
+            </div>
+            {% if profile_data.translations|length == 0 %}
+                <div class="para-bio mb-5">
+                    <lead class="text-muted">{{ profile_data.username }} has not yet translated any street-names.</lead>
+                </div>
+            {% else: %}
+                {% for translation in profile_data.translations %}
+                <div class="card text-white bg-dark mb-3 d-inline-block" style="max-width: 20rem;">
+                    <div class="card-header">Added on {{ translation.date_posted|strftime }}</div>
+                    <div class="card-body">
+                        <h3 class="card-title mb-4">{{ translation.street_name }}</h3>
+                        <a href="{{ url_for('street', street_name=translation.street_name) }}" class="btn btn-sm btn-outline-light stretched-link">Go to translation</a>
+                    </div>
+                </div>
+            {% endfor %}
+            {% endif %}
+            
+        </div>
+    </div>
+
+{% endblock content %}

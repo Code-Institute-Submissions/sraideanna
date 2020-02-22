@@ -1,1 +1,49 @@
-<h1>Glencregagh Road!</h1>
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="pb-2 mt-4 mb-2 border-bottom">
+        <h1 class="display-4">{{ street.name_en }}</h1>
+        <h6 class="lead">Belfast</h6>
+        <h6 class="lead">{{ street.postcode }}</h6>
+    </div>
+</div>
+<!-- If translations are available, then include as a list of cards -->
+{% if street.translations|length > 0: %}
+    {% for translation in street.translations %}
+        <div class="card mt-5 mb-5">
+            <div class="card-header" id="headingOne">
+                <h2 class="card-title font-italic display-4">{{ translation.name_ga }}</h2>
+            </div>
+            <div class="card-body">
+                <h6 class="card-subtitle font-weight-bold mt-2 mb-3">Note:</h6>
+                <p class="card-text">{{ translation.note }}</p>
+                <!-- Only include source details if they are external i.e. not the user themselves -->
+                {% if translation.src != translation.username %}
+                    <h6 class="card-subtitle font-weight-bold mt-2 mb-3">Source:</h6>
+                    <p class="card-text">{{ translation.src }}</p>
+                {% endif %}
+                <small>Translation provided by user: <a href="#!" class="card-link font-weight-bold">{{ translation.username }}</a></small>
+                <!-- Only include an edit button if the current logged-in user is the owner of the translation -->
+                {% if translation.username == user.username %}
+                    <a href="{{ url_for('edit_translation', street_name=street.name_en) }}" class="btn-sm btn-primary ml-2">Edit</a>
+                    <a href="{{ url_for('delete_translation', street_name=street.name_en) }}" class="btn-sm btn-danger ml-2">Delete</a>
+                {% endif %}
+            </div>
+            
+        </div>
+    {% endfor %}
+    <div class="container mb-4">
+        <p>Do you have an alternative translation?</p>
+        <a href="{{ url_for('add_translation', street_name=street.name_en) }}" class="btn-sm btn-secondary ml-1 btn-inline">Add New</a>
+    </div>
+<!-- If there are no translations, then display a card with a message and options to add translation -->
+{% else: %}
+    <div class="card mt-5">
+        <div class="card-body">
+            <h5 class="card-title">Sorry, {{ street.name_en }} has not yet been translated by the community.</h5>
+            <p class="card-text">Be the first to translate this street.</p>
+            <a href="{{ url_for('add_translation', street_name=street.name_en) }}" class="btn-sm btn-primary">Add Translation</a>
+        </div>
+    </div>
+{% endif %}
+{% endblock content %}

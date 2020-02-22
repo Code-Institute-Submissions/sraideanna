@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+
+        <!-- Current User Profile -->
+        <div class="bg-white shadow rounded overflow-hidden mt-5">
+            <div class="px-4 pt-0 pb-4 bg-dark pt-4">
+                <div class="media align-items-end profile-header">
+                    <div class="profile mr-3"><img src="{{ image_file }}" alt="..." width="130" class="rounded mb-2 img-thumbnail"></div>
+                    <div class="media-body ml-3 mb-2 text-white">
+                        <h3 class="mt-0 mb-1">{{ current_user.username }}</h3>
+                        <p class="small mb-2"> <i class="fa fa-map-marker mr-2"></i>{{ current_user.location.capitalize() }}</p>
+                        <p class="small">{{ current_user.email }}</p>
+                        <p class="small">Skill level: <span class="badge badge-light">{{ current_user.level.capitalize() }}</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="content-section mt-5">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom display-4 pt-2 mb-5">Edit your profile</legend>
+                <div class="form-group">
+                    {{ form.email.label(class="form-control-label") }}
+                    {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.email(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.bio.label(class="form-control-label") }}
+                    {% if form.bio.errors %}
+                        {{ form.bio(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.bio.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.bio(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.location.label(class="form-control-label") }}
+                    {% if form.location.errors %}
+                        {{ form.location(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.location.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.location(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.level.label(class="form-control-label") }}
+                    {% if form.level.errors %}
+                        {{ form.level(class="form-control form-control-sm list-unstyled mt-2 p-3 is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.level.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                    
+                        {{ form.level(class="form-control form-control-sm list-unstyled mt-2 p-3") }}
+                        
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-dark") }}
+            </div>
+        </form>
+    </div>
+        </div>
+
+{% endblock content %}

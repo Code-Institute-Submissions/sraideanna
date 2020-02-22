@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="pb-2 mt-4 mb-2 border-bottom">
+            <h1>{{ street }}</h1>
+        </div> 
+    </div>
+    <div class="content-section mt-5 mb-5">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <!-- <legend class="border-bottom display-4 pt-2 mb-5">{{ street }}</legend> -->
+                <div class="form-group">
+                    <!-- Include translation label -->
+                    {{ form.translation.label(class="form-control-label") }}
+                    <!-- If there are errors, display them -->
+                    {% if form.translation.errors %}
+                        {{ form.translation(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.translation.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    <!-- If no errors, display translation -->
+                    {% else %}
+                        {{ form.translation(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <!-- Include note label -->
+                    {{ form.note.label(class="form-control-label") }}
+                    <!-- If there are errors, display them -->
+                    {% if form.note.errors %}
+                        {{ form.note(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.note.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    <!-- If no errors, display note -->
+                    {% else %}
+                        {{ form.note(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <!-- Include source label -->
+                    {{ form.source.label(class="form-control-label") }}
+                    <!-- If there are errors, display them -->
+                    {% if form.source.errors %}
+                        {{ form.source(class="form-control form-control-sm list-unstyled mt-2 p-3 is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.source.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    <!-- If no errors, display source -->
+                    {% else %}
+                    <!-- Display source and src together in same form group -->
+                        {{ form.source(class="form-control form-control-sm list-unstyled mt-2 p-3") }}
+                        {{ form.src.label(class="form-control-label text-muted", id="src-label") }}
+                        {{ form.src(class="form-control form-control-sm list-unstyled mt-2 p-3", readonly="true") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group d-inline">
+                <!-- Display submit button -->
+                {{ form.submit(class="btn btn-outline-dark mb-4") }}
+            </div>
+        </form>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/add_translation.js') }}"></script>
+{% endblock content %}
