@@ -1,11 +1,23 @@
 {% extends "base.html" %}
+
 {% block header %}
 <header class="header">
-    <div class="container h-100">
-        <div class="row h-100 align-items-center">
+    <div class="container h-100 d-flex align-items-center justify-content-center">
+        <div class="row">
             <div class="col-12 text-center">
-                <h1 class="font-weight-light">Sráideanna!</h1>
-                <p class="lead">A collaborative tool for translating the streets of Belfast</p>
+                <h1 class="font-weight-light display-3 home-heading">Sráideanna!</h1>
+                <p class="lead">A resource for looking up Belfast street-names in Irish <br> - sign up if you'd like to contribute a translation!</p>
+            </div>
+            <div class="col-12 text-center d-flex justify-content-center mt-4">
+                <form action="#main">
+                    <button type="submit" class="btn btn-outline-dark">Find a street</button>
+                </form>
+                <!-- if current user is not logged in, add a login button -->
+                {% if not current_user.is_authenticated %}
+                    <form action="/login">
+                        <button type="submit" class="btn btn-dark ml-3">Login</button>
+                    </form>
+                {% endif %}
             </div>
         </div>
         
@@ -15,10 +27,16 @@
 
 {% block content %}
 <div class="container mt-5">
+        <div class="pb-2 mt-4 mb-2 border-bottom">
+            <h1>Find a street</h1>
+        </div> 
+    </div>
+<div class="container mt-5">
     <form class="mt-5 text-center" method="POST" action="">
         {{ form.hidden_tag() }}
+        <!-- The following is a bootstrap-select (external lib) form -->
         <div class="form-group">
-            {{ form.select(class="form-control-lg selectpicker", title="Find a street", data_size="10", data_live_search="true", data_live_search_placeholder="Search here", data_live_search_style="startsWith", data_virtual_scroll="true") }}
+            {{ form.select(class="form-control-lg selectpicker", title="Select", data_size="10", data_width="auto", data_live_search="true", data_live_search_placeholder="Search here", data_live_search_style="startsWith", data_virtual_scroll="true") }}
             {{ form.submit(class="btn btn-sm btn-outline-dark mt-1") }}
         </div>
     </form>

@@ -85,3 +85,23 @@ class EditProfileForm(FlaskForm):
 	    if user and user['username'] != current_user.username:
 	        raise ValidationError(
 	            'Sorry, an account already exists for that email address.')
+
+
+class RequestResetPasswordForm(FlaskForm):
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+    def validate_email(self, email):
+        email = db.users.find_one({'email': email.data})
+        if email is None:
+            raise ValidationError(
+                'Sorry, no account is registered with that email address.')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Choose a New Password',
+                             validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password',
+                                     validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset Password')

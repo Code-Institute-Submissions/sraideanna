@@ -2,9 +2,10 @@ from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
 
 import dateutil.parser
+from datetime import datetime
 
 from App import app, db, utils
-from App.forms import RegistrationForm, LoginForm, StreetSelectForm, TranslationForm, EditProfileForm
+from App.forms import RegistrationForm, LoginForm, StreetSelectForm, TranslationForm, EditTranslationForm, EditProfileForm, RequestResetPasswordForm, ResetPasswordForm
 from App.models import User, Translation
 
 
@@ -38,7 +39,8 @@ def home():
 def about():
 	""" Get data for the recent activity sidebar (in layout.html) """
 	recent = utils.get_recent_activity()
-	return render_template('about.html', title='About Sráideanna', recent=recent)
+	image_file = url_for('static', filename='img/sign.jpg')
+	return render_template('about.html', title='About Sráideanna', recent=recent, image_file=image_file)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -175,6 +177,7 @@ def delete_translation(street_name):
 	""" Remove translation data from the streets collection and the relational data from the user collection"""
 	db.streets.update_one({'name_en': street_name}, { '$pull': { 'translations': { 'username': current_user.username }}})
 	db.users.update_one({'username': current_user.username}, { '$pull': { 'translations': { 'street_name': street_name }}})
+	flash('Your translation has been deleted', 'info')
 	return redirect(url_for('street', street_name=street_name))
 
 
@@ -189,7 +192,7 @@ def view_user_profile(user):
 	else:
 	    """ Otherwise pull queried user's data from DB, then serve a public profile template """
 	    profile_data = db.users.find_one({'username': user})
-	    image_file = url_for('static', filename='avatars/' + profile_data['image_file'])
+	    image_file = url_for('static', filename='img/avatars/' + profile_data['image_file'])
 	    return render_template('profile.html', title='User Profile', profile_data=profile_data, recent=recent, image_file=image_file)
 
 
@@ -222,4 +225,49 @@ def edit_profile():
 
 @app.route("/reset-password", methods=['GET', 'POST'])
 def reset_password_request():
-    return render_template('reset-password-request.html', title='Reset Password')
+	""" Get data for the recent activity sidebar (in layout.html) """
+	recent = utils.get_recent_activity()
+	""" A logged-in user hasn't forgotten their password, so is redirected to home page """
+	if current_user.is_authenticated:
+	    return redirect(url_for('home'))
+	    """ Instantiate request password form """
+	form = RequestResetPasswordForm()
+	if form.validate_on_submit():
+	    """ Get user data from DB """
+	    user_data = db.users.find_one({'email': form.email.data})
+	    """ Use user data to instantiate User object """
+	    user = User(username=user_data['username'], email=user_data['email'], bio=user_data['bio'], location=user_data['location'], level=user_data['level'],
+	                password=user_data['password'], translations=user_data['translations'], favourites=user_data['favourites'])
+	    """ Send user email with link (and token!) to change password """
+	    utils.send_reset_password_email(user)
+	    flash('You\'ve been sent an automated email. Please follow instructions to reset your password.', 'info')
+	    return redirect(url_for('login'))
+	return render_template('reset-password-request.html', title='Reset Password', form=form, recent=recent)
+
+
+""" This route is the result of clicking on the link in the automated email """
+
+
+@app.route("/reset-password/<token>", methods=['GET', 'POST'])
+def reset_password_token(token):
+    """ Get data for the recent activity sidebar (in layout.html) """
+    recent = utils.get_recent_activity()
+    """ A user who is currently logged in wouldn't have asked for password reset, so redirect to home """
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    """ Verifying token """
+    user = User.verify_password_reset_token(token)
+    """ If the token is expired or invalid, redirect to the password reset request """
+    if not user:
+        flash('Sorry, that token is invalid or expired', 'warning')
+        return redirect(url_for('reset_password_request'))
+    """ Instantiate the reset password form """
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        """ Update DB user document with new password """
+        db.users.update_one({'username': user['username']}, {
+                            '$set': {'password': form.password.data}})
+        """ Flash a success message """
+        flash(f'Your password has been updated! You can now log in.', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset-password-token.html', title='Reset Password', form=form, recent=recent)

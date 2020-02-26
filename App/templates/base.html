@@ -75,7 +75,7 @@
                                 </li>
                             {% endif %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('logout') }}">Log out</a>
+                                <a class="nav-link" href="{{ url_for('logout') }}">Log out <small>({{ current_user.username }})</small></a>
                             </li>
                         <!-- If user not loged in then show 'log in' and 'register' links -->
                         {% else %}
@@ -112,7 +112,7 @@
         
         {% block header %}{% endblock %}
         
-        <main role="main" class="container mt-5">   
+        <main role="main" class="container mt-5" id="main">   
             <div class="row">
                 <!-- This is a space for flash messages on any page -->
                 <div class="col-md-9 mt-5">
@@ -151,6 +151,27 @@
                 </div>
             </div>
         </main>
+
+<footer class="footer mt-5">
+
+    
+    <div class="footer-nav">
+        <ul class="footer-nav-list">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('register') }}">Register</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-icon">
+        <a href="https://github.com/rumack/sraideanna" target="_blank"><i class="fa fa-github fa-3x"></i></a>
+    </div>
+
+</footer>
+
+<div class="footer-end">
+    <p>Built By: <a href="https://github.com/rumack/" target="_blank">RoRo</a></p>
+</div>
 
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

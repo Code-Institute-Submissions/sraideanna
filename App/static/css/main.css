@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 #navbarResponsive .navbar-nav li > a {
     text-transform: uppercase;
     color: #333;
@@ -15,10 +19,15 @@
     color: #fff;
 }
 
+.nav-link small {
+    font-weight: bold;
+    text-transform: none;
+}
+
 .header {
     height: 100vh;
     min-height: 500px;
-    background-image: url('https://source.unsplash.com/BtbjCFUvBXs/1920x1080');
+    background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('../img/sraideanna-bg.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -29,4 +38,95 @@
     padding: 10px 20px;
     border-radius: 3px;
     margin-bottom: 20px;
+}
+
+.about a:link,
+.about a:visited {
+    color: #212529;
+}
+
+.footer {
+    width: 100%;
+    height: 200px;
+    margin: auto;
+    background: #23272B;
+    color: white;
+
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+}
+
+.footer-icon {
+    padding: 50px;
+    margin-right: 40px;
+    justify-self: end;
+}
+
+.footer-nav {
+    padding: 50px;
+    
+    justify-self: start;
+}
+
+.footer ul {
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.footer ul li {
+    text-decoration: none;
+    text-transform: uppercase;
+    align-self: center;
+}
+
+.footer ul li:not(first-child) {
+    margin-left: 8px;
+}
+
+.footer-nav li a:link,
+.footer-nav li a:visited {
+    color: white;
+}
+
+.footer-icon a i {
+    color: white;
+    transition: transform .5s;
+}
+
+.footer-icon a i:hover {
+    transform: scale(1.2);
+}
+
+.footer-end {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #6E6E6E;
+}
+
+/*.footer-icon {
+    height: 40px;
+}*/
+
+.footer-end p {
+    margin: 0;
+    padding: 5px;
+    color: white;
+}
+
+.footer-end a:link,
+.footer-end a:visited {
+    color: white;
+}
+
+
+
+@media screen and (max-width: 600px) {
+  h1.home-heading {
+    font-size: 50px;
+  }
 }

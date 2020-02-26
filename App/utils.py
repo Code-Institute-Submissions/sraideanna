@@ -1,11 +1,16 @@
-from datetime import datetime, timedelta
+from flask import url_for
+from flask_mail import Message
 import timeago
+
+from datetime import datetime, timedelta
 import dateutil.parser
 from operator import itemgetter
 
-from App import app, db
+from App import app, db, mail
+
 
 # A function to get recent database activity for the sidebar
+
 
 def get_recent_activity():
     """ Get current time"""
@@ -28,3 +33,24 @@ def get_recent_activity():
         date_posted = timeago.format(translation['date_posted'], now)
         translation['date_posted'] = date_posted
     return recent
+
+
+""" Function to send email to user with link to change password """
+
+
+def send_reset_password_email(user):
+    token = user.get_password_reset_token()
+    message = Message('Sraideanna! - Password Reset Request',
+                      sender='noreply@sraideanna.com', recipients=[user.email])
+    message.body = f"""Hi, {user.username}. 
+
+It seems you've requested a password change. Please visit the following link: 
+
+{url_for('reset_password_token', token=token, _external=True)}
+
+If you did not request a password change, then ignore this email.
+
+Le gach dea-ghuí,
+Sraideanna!
+"""
+    mail.send(message)
