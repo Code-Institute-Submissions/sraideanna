@@ -273,8 +273,8 @@ The application was tested in each of the following browsers with no issues or b
 
 
 
-Back to [README](App/README.md).
-Jump to [database documentation](App/docs/db.md).
+* Back to [README](../../README.md).
+* Jump to [database documentation](../db.md).
 
 
  

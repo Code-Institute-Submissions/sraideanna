@@ -79,5 +79,5 @@ Refine database management. Using indexes on street names, for example, or makin
 
 
 
-Back to [README](App/README.md).
-Jump to [testing documentation](App/docs/testing.md).
+* Back to [README](../../README.md).
+* Jump to [testing documentation](../testing.md).
