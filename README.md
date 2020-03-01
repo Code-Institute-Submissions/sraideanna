@@ -1,6 +1,17 @@
 # Sráideanna!
 A collaborative space where users can look up the Irish language version of Belfast street-names, or even better - sign up and start contributing translations in order to complete the database.
 
+\
+\
+\
+![](/App/static/img/homepage.png)
+<br />
+<br />
+**Click here to see a working [demo](https://sraideanna.herokuapp.com/).**
+<br />
+<br />
+<br />
+
 ## Overview
  
 ### What is this application for?
@@ -25,7 +36,7 @@ The site is styled using the **Bootstrap CSS** front-end framework with **JQuery
 
 The database and the application are hosted on the **Heroku** platform. The **MONGO_URI** and **SECRET_KEY** are hidden in environment variables locally during development and stored as environment variables using Heroku Config Vars in production. 
 
-The site is designed using a **mobile-first** approach and can be viewed [HERE](https://sraideanna.herokuapp.com/). 
+The site is designed using a **mobile-first** approach and a live demo can be viewed [HERE](https://sraideanna.herokuapp.com/). 
 
 ## Features
 Find below the features provided in the Sráideanna! application. 
@@ -56,7 +67,7 @@ Each street page provides the street-name in English with the post code. If tran
 * Member Users can **add** translations, or **edit** and **delete** any of the translations they contribute. 
 * A user can only add one translation per street.
 * A user's translation can be their own, or if they're using a translation coined by someone else, they must enter details about their source.
-* Users are asked to provide a note to explain or justify a translation, although this is optional.
+* Users are asked to provide a note to explain or justify a translation.
 * Each street can have multiple suggested translations, but they must come from different users.
 * A list of translations provided by a user will appear on their profile page.
 * A list of the five most recent translations added to the database will appear in a 'recent activity' sidebar on all pages, with some truncated details and a 'time ago' label.
@@ -64,9 +75,9 @@ Each street page provides the street-name in English with the post code. If tran
 * Any translation activity requires logging in. Any users who are not logged in will receive a flash message explaining this.
 
 ### Testing
-The application was tested manually by walking through the features from the perspective of the two targeted user groups: **Unregistered Users** who are looking for a translation, or who would like to browse the database or to register; and **Registered Users** who can add to or edit the database. Testing was also carried out on browser compatibility. 
+The application was tested manually by walking through the features from the perspective of the two targeted user groups: **Unregistered Users** who are looking for a translation, or who would like to browse the database or to register; and **Registered Users** who can add to or edit the database or delete their contributions. Registered users can also definitively delete their account, although the data they contributed in the form of translations will persist, unless they have specifically deleted specific translations before deleting their account. Testing was also carried out on browser compatibility. 
 
-The testing process is detailed [here](App/testing/testing.md)
+The testing process is detailed [here](App/docs/testing.md).
 
 ### Features Left to Implement
 - User authentication
@@ -79,7 +90,7 @@ Sráideanna! uses a document-oriented database using MongoDB. The chosen structu
 - exploring the relationship between collections.
 - developing the application's Python classes based on all these considerations.
 
-Examples of outputs from each of the above steps are provided in the [database documentation](docs/db.md)
+Examples of outputs from each of the above steps are provided in the [database documentation](App/docs/db.md).
 
 ## Technologies
 
