@@ -5,7 +5,7 @@ import dateutil.parser
 from datetime import datetime
 
 from App import app, db, utils
-from App.forms import RegistrationForm, LoginForm, StreetSelectForm, TranslationForm, EditTranslationForm, EditProfileForm, RequestResetPasswordForm, ResetPasswordForm
+from App.forms import RegistrationForm, LoginForm, StreetSelectForm, TranslationForm, EditTranslationForm, EditProfileForm, DeleteAccountForm, RequestResetPasswordForm, ResetPasswordForm
 from App.models import User, Translation
 
 
@@ -88,7 +88,7 @@ def login():
 @app.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 
 @app.route('/street/<street_name>', methods=['GET', 'POST'])
@@ -128,6 +128,7 @@ def add_translation(street_name):
 	    translation.add_to_db()
 	    """ Add translation reference to corresponding user document (users collection) """
 	    translation.update_in_user_db()
+	    flash('Translation added successfully.', 'success')
 	    return redirect(url_for('street', street_name=street['name_en']))
 	return render_template('add-translation.html', title='Translate Street', form=form, street=street_name, user=user, recent=recent)
 
@@ -168,6 +169,7 @@ def edit_translation(street_name):
 	                              src=form.src.data, username=user.username, street_name=street_name)
 	    """ Update DB to edit translation """
 	    translation.update_in_db()
+	    flash('Translation edited successfully.', 'success')
 	    return redirect(url_for('street', street_name=street_name))
 	return render_template("edit-translation.html", title='Edit your translation', form=form, street=street_name, user=user, recent=recent)
 
@@ -187,14 +189,18 @@ def view_user_profile(user):
 	recent = utils.get_recent_activity()
 	""" If a user is logged on and if the query name matches the logged on user's name, then serve a personal profile template """
 	if current_user.is_authenticated and user == current_user.username:
-	    image_file = url_for('static', filename='img/avatars/' + current_user.image_file)
-	    return render_template('your-profile.html', title='Your Profile', recent=recent, image_file=image_file)
+		image_file = url_for('static', filename='img/avatars/' + current_user.image_file)
+		return render_template('your-profile.html', title='Your Profile', recent=recent, image_file=image_file)
 	else:
-	    """ Otherwise pull queried user's data from DB, then serve a public profile template """
-	    profile_data = db.users.find_one({'username': user})
-	    image_file = url_for('static', filename='img/avatars/' + profile_data['image_file'])
-	    return render_template('profile.html', title='User Profile', profile_data=profile_data, recent=recent, image_file=image_file)
-
+		""" Otherwise pull queried user's data from DB, then serve a public profile template """
+		profile_data = db.users.find_one({'username': user})
+		""" If username is in db then serve public profile, otherwise serve missing profile page"""
+		if profile_data is not None:
+			image_file = url_for('static', filename='img/avatars/' + profile_data['image_file'])
+			return render_template('profile.html', title='User Profile', profile_data=profile_data, recent=recent, image_file=image_file)
+		else:
+			return render_template('missing-profile.html', recent=recent)
+		
 
 @app.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
@@ -203,24 +209,38 @@ def edit_profile():
 	recent = utils.get_recent_activity()
 	""" Set avatar image from static avatars folder (will be automated to depend on skill level) """
 	image_file = url_for('static', filename='img/avatars/' + current_user.image_file)
+	""" See method below to discern between the following forms """
 	form = EditProfileForm()
+	form2 = DeleteAccountForm()
 	if request.method == 'GET':
 	    form.email.data = current_user.email
 	    form.bio.data = current_user.bio
 	    form.location.data = current_user.location
 	    form.level.data = current_user.level
-	if form.validate_on_submit():
-	    if form.email.data != current_user.email:
-	        db.users.update_one({'username': current_user.username}, {
-	                        '$set': {'email': form.email.data, 'bio': form.bio.data, 'location': form.location.data, 'level': form.level.data}})
-	        flash(f'You\'ve successfully updated your profile. Please log in again.', 'success')
-	        return redirect(url_for('logout'))
-	    else:
-	        db.users.update_one({'username': current_user.username}, {
-	                        '$set': {'email': form.email.data, 'bio': form.bio.data, 'location': form.location.data, 'level': form.level.data}})
-	        flash(f'You\'ve successfully updated your profile.', 'success')
-	        return redirect(url_for('view_user_profile', user=current_user.username))
-	return render_template('edit-profile.html', title='Edit your profile', image_file=image_file, recent=recent, form=form)
+	if request.method == 'POST':
+		""" If edit form is posted """
+		if 'submit' in request.form:
+			""" If user edits email address (which is used for login), force relogin after edit """
+			if form.email.data != current_user.email:
+				db.users.update_one({'username': current_user.username}, {'$set': {'email': form.email.data, 'bio': form.bio.data, 'location': form.location.data, 'level': form.level.data}})
+				flash(f'You\'ve successfully updated your profile. Please log in again.', 'success')
+				return redirect(url_for('logout'))
+				""" If user doesn't edit email adderss, then do not force relogin, just update profile """
+			else:
+				db.users.update_one({'username': current_user.username}, {'$set': {'email': form.email.data, 'bio': form.bio.data, 'location': form.location.data, 'level': form.level.data}})
+				flash(f'You\'ve successfully updated your profile.', 'success')
+				return redirect(url_for('view_user_profile', user=current_user.username))
+			""" else if delete account form is posted """
+		else:
+			""" If user has contributed street translations, change the username associated with each to 'account deleted' in the 'streets' collection """
+			db.streets.update_many({'translations.username': current_user.username}, {'$set': { 'translations.$.username': 'Account deleted' } })
+			""" In the 'users' collection, remove the user document """
+			db.users.delete_one({'username': current_user.username})
+			flash(f'You\'ve successfully deleted your account.', 'success')
+			""" Account deleted so force logout """
+			return redirect(url_for('logout'))
+		
+	return render_template('edit-profile.html', title='Edit your profile', image_file=image_file, recent=recent, form=form, form2=form2)
 
 
 @app.route("/reset-password", methods=['GET', 'POST'])

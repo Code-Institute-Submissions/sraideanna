@@ -6,12 +6,12 @@
         </div> 
     </div>
     <div class="content-section mt-5">
-        <form method="POST" action="">
+       <!--  The 'novalidate' attribute below ensures that only Flask (not browser) manages form validation so error messages appear as intended  -->
+        <form action="" method="POST" novalidate>
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <div class="form-group">
                     {{ form.username.label(class="form-control-label") }}
-
                     {% if form.username.errors %}
                         {{ form.username(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">

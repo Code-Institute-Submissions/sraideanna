@@ -14,7 +14,7 @@ class RegistrationForm(FlaskForm):
 	    'enthusiast', 'High-Level Enthusiast: A seasoned translator'), ('amateur', 'Amateur: Some experience but no expert'), ('novice', 'Novice: Little to no experience')], validators=[DataRequired()])
 	password = PasswordField('Choose a Password:', validators=[DataRequired()])
 	confirm_password = PasswordField('Confirm Password:',
-	                                 validators=[DataRequired(), EqualTo('password')])
+	                                 validators=[DataRequired(), EqualTo('password', message='Your passwords must match.')])
 	submit = SubmitField('Sign Up')
 
 	def validate_username(self, username):
@@ -85,6 +85,11 @@ class EditProfileForm(FlaskForm):
 	    if user and user['username'] != current_user.username:
 	        raise ValidationError(
 	            'Sorry, an account already exists for that email address.')
+
+
+class DeleteAccountForm(FlaskForm):
+	delete = BooleanField('Yes, I want to delete my account', validators=[DataRequired()])
+	submitDelete = SubmitField('Delete Account')
 
 
 class RequestResetPasswordForm(FlaskForm):

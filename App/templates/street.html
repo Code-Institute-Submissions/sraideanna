@@ -27,7 +27,7 @@
                 {% if translation.username == user.username %}
                     <div class="mt-3">
                         <a href="{{ url_for('edit_translation', street_name=street.name_en) }}" class="btn-sm btn-primary ml-2">Edit</a>
-                        <a href="{{ url_for('delete_translation', street_name=street.name_en) }}" class="btn-sm btn-danger ml-2">Delete</a>
+                        <a href="{{ url_for('delete_translation', street_name=street.name_en) }}" class="btn-sm btn-danger ml-2" id="delete-translation">Delete</a>
                     </div>
                     
                 {% endif %}
@@ -49,4 +49,5 @@
         </div>
     </div>
 {% endif %}
+<script src="{{ url_for('static', filename='js/deleteTranslation.js') }}"></script>
 {% endblock content %}

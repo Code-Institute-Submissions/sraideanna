@@ -7,10 +7,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <!-- Bootstrap-Select - for the home-page select menu -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <!-- Font awesome -->
         <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Custom CSS -->
@@ -115,7 +115,7 @@
         <main role="main" class="container mt-5" id="main">   
             <div class="row">
                 <!-- This is a space for flash messages on any page -->
-                <div class="col-md-9 mt-5">
+                <div class="col-lg-9 col-md-8 mt-5">
                     {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         {% for category, message in messages %}
@@ -128,7 +128,7 @@
                     {% block content %}{% endblock %}
                 </div>
                 <!-- The recent activity sidebar -->
-                <div class="col-md-3 mt-5">
+                <div class="col-lg-3 col-md-4 mt-5">
                     <div class="container mt-5 pb-2 mb-2 border-bottom">
                         <h4 class="mt-3 font-weight-light">Recent Activity</h4>
                             <p class='text-muted'>See most recent translations by community members.</p>

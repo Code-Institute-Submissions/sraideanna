@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="container mt-5">
+        <div class="pb-2 mt-4 mb-2 border-bottom">
+            <h1 class="display-5">Missing Profile</h1>
+        </div> 
+    </div>
+
+    <div class="container d-flex flex-column mt-5 mb-5">
+        <div class="missing">
+            <i class="fa fa-question-circle-o mb-4"></i>
+            <p class="lead">The public profile you are looking for doesn't exist. It's possible the user has deleted their account.</p>
+        </div>       
+    </div>
+
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Haven't joined us yet? <a class="ml-2" href="{{ url_for('register') }}">Register Now</a>
+        </small>
+    </div>
+    
+{% endblock content %}

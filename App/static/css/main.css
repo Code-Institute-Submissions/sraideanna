@@ -2,6 +2,8 @@ html {
     scroll-behavior: smooth;
 }
 
+/*Navbar custom styling*/
+
 #navbarResponsive .navbar-nav li > a {
     text-transform: uppercase;
     color: #333;
@@ -24,6 +26,8 @@ html {
     text-transform: none;
 }
 
+/*Home page header styling*/
+
 .header {
     height: 100vh;
     min-height: 500px;
@@ -33,6 +37,8 @@ html {
     background-repeat: no-repeat;
 }
 
+/*Content section styling*/
+
 .content-section {
     width: 60%;
     padding: 10px 20px;
@@ -40,10 +46,20 @@ html {
     margin-bottom: 20px;
 }
 
+/*About page links*/
+
 .about a:link,
 .about a:visited {
     color: #212529;
 }
+
+/*Missing profiles*/
+
+.missing  i {
+    font-size: 5rem;
+}
+
+/*Footer Styles*/
 
 .footer {
     width: 100%;
@@ -108,10 +124,6 @@ html {
     background: #6E6E6E;
 }
 
-/*.footer-icon {
-    height: 40px;
-}*/
-
 .footer-end p {
     margin: 0;
     padding: 5px;
@@ -123,10 +135,16 @@ html {
     color: white;
 }
 
-
+/*Media Queries*/
 
 @media screen and (max-width: 600px) {
   h1.home-heading {
     font-size: 50px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .content-section {
+    width: 100%;
   }
 }

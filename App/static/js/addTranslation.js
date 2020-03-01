@@ -1,3 +1,5 @@
+// Handles the interaction between radio buttons and 'source' input (only on add and edit translation pages)
+
 onDOMContentLoaded = (function(){ 
     const radioOne = document.getElementById('source-0');
     const radioTwo = document.getElementById('source-1');
