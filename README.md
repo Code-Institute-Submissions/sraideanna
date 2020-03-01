@@ -32,14 +32,16 @@ Users who are interested can sign up (using a valid email address) in order to b
 
 **PyMongo** is used to connect the application's Python classes and methods to a **MongoDB** database. All data input is handled using **WTForms**.
 
-The site is styled using the **Bootstrap CSS** front-end framework with **JQuery** code for enhancing user-experience. 
+The site is styled using the **Bootstrap CSS** front-end framework for responsiveness and enhanced user-experience. **JQuery** and **Popper** are dependencies of Bootstrap. 
 
-The database and the application are hosted on the **Heroku** platform. The **MONGO_URI** and **SECRET_KEY** are hidden in environment variables locally during development and stored as environment variables using Heroku Config Vars in production. 
+The application is hosted on the **Heroku** platform, the database is hosted by **MongoDB Atlas**. 
+
+The **MONGO_URI** and **SECRET_KEY** are hidden in environment variables locally during development and stored as environment variables using Heroku Config Vars in production. 
 
 The site is designed using a **mobile-first** approach and a live demo can be viewed [HERE](https://sraideanna.herokuapp.com/). 
 
 ## Features
-Find below the features provided in the Sráideanna! application. 
+The following are the features provided in the Sráideanna! application. 
 
 ### Existing Features
 
@@ -75,56 +77,61 @@ Each street page provides the street-name in English with the post code. If tran
 * Any translation activity requires logging in. Any users who are not logged in will receive a flash message explaining this.
 
 ### Testing
-The application was tested manually by walking through the features from the perspective of the two targeted user groups: **Unregistered Users** who are looking for a translation, or who would like to browse the database or to register; and **Registered Users** who can add to or edit the database or delete their contributions. Registered users can also definitively delete their account, although the data they contributed in the form of translations will persist, unless they have specifically deleted specific translations before deleting their account. Testing was also carried out on browser compatibility. 
+The application was tested manually by walking through the features from the perspective of the two targeted user groups: **Unregistered Users** who are looking for a translation, or who would like to browse the database or to register; and **Registered Users** who can add to or edit the database or delete their contributions. Registered users can also definitively delete their account, although the data they contributed in the form of translations will persist, unless they have been deleted before the account is shut down. Testing was also carried out on browser compatibility. 
 
 The testing process is detailed [here](App/docs/testing.md).
 
 ### Features Left to Implement
-- User authentication
 - Map visualisation of streets. This was an original feature in the application design. However, the various APIs used to provide coordinates for streets were unable to find data for 700 of the 4000 streets. Since the feature couldn't be applied to all streets, and the number of streets with missing data was substantial, the feature was removed and will be added once the geolocation data can be obtained.
+- User authentication
+- User up-voting or down-voting of translations
+- Reverse search order (Irish to English)
 
 ## Database Organisation
 Sráideanna! uses a document-oriented database using MongoDB. The chosen structure was developed by progessing through the following steps:
-- defining the principal collections within the database - users and translations.
+- defining the principal collections within the database - users, streets and translations.
 - refining the fields each user or translation document should contain.
 - exploring the relationship between collections.
-- developing the application's Python classes based on all these considerations.
+- developing the application's Python classes and route logic based on all these considerations.
 
-Examples of outputs from each of the above steps are provided in the [database documentation](App/docs/db.md).
+Some documentation of this process as well as sample documents from the database itself can be found in the [database documentation](App/docs/db.md).
 
-## Technologies
+## Code
 
-### Specific technology used on the application includes:
+### Languages and tools used on the application include:
 
 ### Code
-- **HTML**, **CSS**, **JavaScript**, **JQuery** and **Python**
+- **HTML**, **CSS**, **JavaScript**, and **Python**
   - Base languages used to create application
 - [Flask 1.1.1](https://palletsprojects.com/p/flask/)
     - **Flask** is used as micro-framework to create and manage the application
 - [MongoDB](https://www.mongodb.com/)
     - **PyMongo** is a MongoDB extension for Flask. 
 - [Bootstrap 4.0.0](https://getbootstrap.com/)
-    - **Bootstrap** is used to render a responsive layout and most of the UI components of the application
-
+    - **Bootstrap** (with JQuery) is used to render a responsive layout and most of the UI components of the application
 
 ### Deployment and Hosting
 
 - [Heroku](https://www.heroku.com/)
     - The Cloud Application Platform **Heroku** hosts the Sráideanna application.
+    - Deployment notes: Heroku CLI to push app to Heroku -- ensure Procfile created and set environment variables to Heroku config vars.
  
 ### Getting the code up and running
 
-1. Create a virtual environment running Python3.
+1. Create a virtual environment running Python3 (3.7.5).
 2. Clone this repository by running the following command: ```git clone https://github.com/rumack/sraideanna.git```.
-3. Install requirements using the following command: ```pip install -r requirements.txt```.
+3. Install requirements using Pip: ```pip install -r requirements.txt```.
 4. Set up a MongoDB database and connect the application to it.
 5. Paste your MongoDB connection string into a MONGO_URI environment variable.
 6. You will also need to add a SECRET_KEY environment variable to your local system
 7. If you wish to test the password reset functionality, you will need to add MAIL_USER and MAIL_PASSWORD environment variables to your local system. The function is set to use Gmail smtp server, but this can be changed in the utils.py file.
 8. Run the application from the application directory: ```python run.py```.
-9. The project will now run on [localhost](http://127.0.0.1:5000).
+9. The application will now run on [localhost](http://127.0.0.1:5000).
 
 
 
 
+
+Jump to [testing documentation](App/docs/testing.md).
+Jump to [database documentation](App/docs/db.md).
 

@@ -40,7 +40,7 @@ def about():
 	""" Get data for the recent activity sidebar (in layout.html) """
 	recent = utils.get_recent_activity()
 	image_file = url_for('static', filename='img/sign.jpg')
-	return render_template('about.html', title='About Sráideanna', recent=recent, image_file=image_file)
+	return render_template('about.html', title='About Us', recent=recent, image_file=image_file)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -171,7 +171,7 @@ def edit_translation(street_name):
 	    translation.update_in_db()
 	    flash('Translation edited successfully.', 'success')
 	    return redirect(url_for('street', street_name=street_name))
-	return render_template("edit-translation.html", title='Edit your translation', form=form, street=street_name, user=user, recent=recent)
+	return render_template("edit-translation.html", title='Edit translation', form=form, street=street_name, user=user, recent=recent)
 
 
 @app.route('/delete-translation/<street_name>', methods=['GET', 'POST'])
@@ -199,7 +199,7 @@ def view_user_profile(user):
 			image_file = url_for('static', filename='img/avatars/' + profile_data['image_file'])
 			return render_template('profile.html', title='User Profile', profile_data=profile_data, recent=recent, image_file=image_file)
 		else:
-			return render_template('missing-profile.html', recent=recent)
+			return render_template('missing-profile.html', title='Missing profile', recent=recent)
 		
 
 @app.route('/edit-profile', methods=['GET', 'POST'])
@@ -240,7 +240,7 @@ def edit_profile():
 			""" Account deleted so force logout """
 			return redirect(url_for('logout'))
 		
-	return render_template('edit-profile.html', title='Edit your profile', image_file=image_file, recent=recent, form=form, form2=form2)
+	return render_template('edit-profile.html', title='Edit profile', image_file=image_file, recent=recent, form=form, form2=form2)
 
 
 @app.route("/reset-password", methods=['GET', 'POST'])
