@@ -80,4 +80,4 @@ Refine database management. Using indexes on street names, for example, or makin
 
 
 * Back to [README](../../README.md).
-* Jump to [testing documentation](../testing.md).
+* Jump to [testing documentation](../docs/testing.md).
