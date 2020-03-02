@@ -31,8 +31,8 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-	email = StringField('Email', validators=[DataRequired(), Email()])
-	password = PasswordField('Password', validators=[DataRequired()])
+	email = StringField('Email:', validators=[DataRequired(), Email()])
+	password = PasswordField('Password:', validators=[DataRequired()])
 	remember = BooleanField('Remember Me')
 	submit = SubmitField('Login')
 
@@ -93,7 +93,7 @@ class DeleteAccountForm(FlaskForm):
 
 
 class RequestResetPasswordForm(FlaskForm):
-    email = StringField('Email',
+    email = StringField('Your Email:',
                         validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
 
