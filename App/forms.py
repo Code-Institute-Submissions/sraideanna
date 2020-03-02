@@ -6,40 +6,45 @@ from flask_login import current_user
 
 
 class RegistrationForm(FlaskForm):
-	username = StringField('Username:', validators=[DataRequired(), Length(min=2, max=20)])
-	email = StringField('Email:', validators=[DataRequired(), Email()])
-	bio = TextAreaField('If you want to, tell the community a bit about yourself: (optional)')
-	location = StringField('Your location:', validators=[DataRequired()])
-	level = RadioField('What is your level of translation ability in Irish?', choices=[('master', 'Mastery: Master translator, professional level'), (
-	    'enthusiast', 'High-Level Enthusiast: A seasoned translator'), ('amateur', 'Amateur: Some experience but no expert'), ('novice', 'Novice: Little to no experience')], validators=[DataRequired()])
-	password = PasswordField('Choose a Password:', validators=[DataRequired()])
-	confirm_password = PasswordField('Confirm Password:',
-	                                 validators=[DataRequired(), EqualTo('password', message='Your passwords must match.')])
-	submit = SubmitField('Sign Up')
+    username = StringField('Username:', validators=[
+                           DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email:', validators=[DataRequired(), Email()])
+    bio = TextAreaField(
+        'If you want to, tell the community a bit about yourself: (optional)')
+    location = StringField('Your location:', validators=[DataRequired()])
+    level = RadioField('What is your level of translation ability in Irish?', choices=[('master', 'Mastery: Master translator, professional level'), (
+        'enthusiast', 'High-Level Enthusiast: A seasoned translator'), ('amateur', 'Amateur: Some experience but no expert'), ('novice', 'Novice: Little to no experience')], validators=[DataRequired()])
+    password = PasswordField('Choose a Password:', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password:',
+                                     validators=[DataRequired(), EqualTo('password', message='Your passwords must match.')])
+    submit = SubmitField('Sign Up')
 
-	def validate_username(self, username):
-	    user = db.users.find_one({'username': username.data})
-	    if user:
-	        raise ValidationError(
-	            'Sorry, the username you chose is already taken. Please choose another.')
+    """ The following custon validators check new usernames and email address against the database to prevent duplication """
 
-	def validate_email(self, email):
-	    email = db.users.find_one({'email': email.data})
-	    if email:
-	        raise ValidationError(
-	            'Sorry, an account already exists for that email address.')
+    def validate_username(self, username):
+        user = db.users.find_one({'username': username.data})
+        if user:
+            raise ValidationError(
+                'Sorry, the username you chose is already taken. Please choose another.')
+
+    def validate_email(self, email):
+        email = db.users.find_one({'email': email.data})
+        if email:
+            raise ValidationError(
+                'Sorry, an account already exists for that email address.')
 
 
 class LoginForm(FlaskForm):
-	email = StringField('Email:', validators=[DataRequired(), Email()])
-	password = PasswordField('Password:', validators=[DataRequired()])
-	remember = BooleanField('Remember Me')
-	submit = SubmitField('Login')
+    email = StringField('Email:', validators=[DataRequired(), Email()])
+    password = PasswordField('Password:', validators=[DataRequired()])
+    remember = BooleanField('Remember Me')
+    submit = SubmitField('Login')
 
 
 class StreetSelectForm(FlaskForm):
-	select = SelectField('', choices=['Abbey Gardens', 'Abercorn Street'], validators=[DataRequired(), InputRequired()])
-	submit = SubmitField('Select')
+    select = SelectField('', choices=['Abbey Gardens', 'Abercorn Street'], validators=[
+                         DataRequired(), InputRequired()])
+    submit = SubmitField('Select')
 
 
 class TranslationForm(FlaskForm):
@@ -69,33 +74,37 @@ class EditTranslationForm(FlaskForm):
 
 
 class EditProfileForm(FlaskForm):
-	email = StringField('Edit your email address:',
-	                    validators=[DataRequired(), Email()])
-	bio = TextAreaField(
-	    'Edit your public bio: (optional)')
-	location = StringField('Update your location:',
-	                         validators=[DataRequired()])
-	level = RadioField('Update your translation skill level:', choices=[('master', 'Mastery: Master translator, professional level'), (
-	    'enthusiast', 'High-Level Enthusiast: A seasoned translator'), ('amateur', 'Amateur: Some experience but no expert'), ('novice', 'Novice: Little to no experience')], validators=[DataRequired()])
-	submit = SubmitField('Edit profile')
+    email = StringField('Edit your email address:',
+                        validators=[DataRequired(), Email()])
+    bio = TextAreaField(
+        'Edit your public bio: (optional)')
+    location = StringField('Update your location:',
+                           validators=[DataRequired()])
+    level = RadioField('Update your translation skill level:', choices=[('master', 'Mastery: Master translator, professional level'), (
+        'enthusiast', 'High-Level Enthusiast: A seasoned translator'), ('amateur', 'Amateur: Some experience but no expert'), ('novice', 'Novice: Little to no experience')], validators=[DataRequired()])
+    submit = SubmitField('Edit profile')
 
+    """ Again, this validator prevents a user using an email address that's already in the database """
 
-	def validate_email(self, email):
-	    user = db.users.find_one({'email': email.data})
-	    if user and user['username'] != current_user.username:
-	        raise ValidationError(
-	            'Sorry, an account already exists for that email address.')
+    def validate_email(self, email):
+        user = db.users.find_one({'email': email.data})
+        if user and user['username'] != current_user.username:
+            raise ValidationError(
+                'Sorry, an account already exists for that email address.')
 
 
 class DeleteAccountForm(FlaskForm):
-	delete = BooleanField('Yes, I want to delete my account', validators=[DataRequired()])
-	submitDelete = SubmitField('Delete Account')
+    delete = BooleanField('Yes, I want to delete my account',
+                          validators=[DataRequired()])
+    submitDelete = SubmitField('Delete Account')
 
 
 class RequestResetPasswordForm(FlaskForm):
     email = StringField('Your Email:',
                         validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
+
+    """ This validator allows the application to inform the user if they attempt to send a 'reset password' link to an email address that is not registered in the database """
 
     def validate_email(self, email):
         email = db.users.find_one({'email': email.data})

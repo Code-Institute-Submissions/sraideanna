@@ -3,7 +3,7 @@
 onDOMContentLoaded = (function(){ 
 	const deleteAccountBtn = document.getElementById('delete-account');
 		deleteAccountBtn.addEventListener('click', (e) => {
-			if (!confirm('Are you sure you want to delete your account? \n It cannot be retrieved.')) {
+			if (!confirm('Are you sure you want to delete your account? \nIt cannot be retrieved.')) {
 				e.preventDefault(); 
 		   		e.stopPropagation();
 			}

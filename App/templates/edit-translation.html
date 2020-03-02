@@ -9,7 +9,6 @@
         <form method="POST" action="" novalidate>
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <!-- <legend class="border-bottom display-4 pt-2 mb-5">{{ street }}</legend> -->
                 <div class="form-group">
                     <!-- Include translation label -->
                     {{ form.translation.label(class="form-control-label") }}
@@ -69,5 +68,6 @@
         </form>
     </div>
     
+    <!-- Custom script to handle radio buttons -->
     <script src="{{ url_for('static', filename='js/addTranslation.js') }}"></script>
 {% endblock content %}

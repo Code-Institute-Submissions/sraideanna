@@ -53,6 +53,8 @@ class User:
         s = Serializer(app.config['SECRET_KEY'], expires_sec)
         return s.dumps({'username': self.username}).decode('utf-8')
 
+    """ A static method that allows for verification of reset password token """
+
     @staticmethod
     def verify_password_reset_token(token):
         s = Serializer(app.config['SECRET_KEY'])
@@ -75,6 +77,8 @@ class Translation:
 
     def __repr__(self):
         return f"Translation('{self.name_ga}', '{self.date_posted}', '{self.note}', '{self.src}', '{self.username}', '{self.street_name}')"
+
+    """ Methods for interacting with the db """
 
     def add_to_db(self):
         db.streets.update_one({'name_en': self.street_name}, {'$addToSet': {'translations': {

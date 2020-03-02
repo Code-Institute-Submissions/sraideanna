@@ -10,11 +10,11 @@
     <div class="bg-white shadow rounded overflow-hidden mt-5">
         <div class="px-4 pt-0 pb-4 bg-dark pt-4">
             <div class="media align-items-end profile-header">
-                <div class="profile mr-3"><img src="{{ image_file }}" alt="..." width="130" class="rounded mb-2 img-thumbnail"></div>
+                <div class="profile mr-3"><img src="{{ image_file }}" alt="User avatar" width="150" class="rounded mb-2 img-thumbnail"></div>
                 <div class="media-body ml-3 mb-4 text-white">
                     <h3 class="mt-0 mb-1">{{ profile_data.username }}</h3>
-                    <p class="small mb-2"> <i class="fa fa-map-marker mr-2"></i>{{ profile_data.location.capitalize() }}</p>
-                    <p class="small">Skill level: <span class="badge badge-light">{{ profile_data.level.capitalize() }}</span></p>
+                    <p class="small mb-2"> <i class="fa fa-map-marker mr-2"></i>{{ profile_data.location.title() }}</p>
+                    <p class="small">Skill level: <span class="badge badge-light">{{ profile_data.level.title() }}</span></p>
                 </div>
             </div>
         </div>

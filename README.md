@@ -124,7 +124,7 @@ Some documentation of this process as well as sample documents from the database
 4. Set up a MongoDB database and connect the application to it.
 5. Paste your MongoDB connection string into a MONGO_URI environment variable.
 6. You will also need to add a SECRET_KEY environment variable to your local system
-7. If you wish to test the password reset functionality, you will need to add MAIL_USER and MAIL_PASSWORD environment variables to your local system. The function is set to use Gmail smtp server, but this can be changed in the utils.py file.
+7. If you wish to test the password reset functionality, you will need to add MAIL_USER and MAIL_PASSWORD environment variables to your local system. The function is set to use Gmail smtp server, but this can be changed in the '__init__.py' file.
 8. Run the application from the application directory: ```python run.py```.
 9. The application will now run on [localhost](http://127.0.0.1:5000).
 
@@ -132,6 +132,6 @@ Some documentation of this process as well as sample documents from the database
 
 
 
-Jump to [testing documentation](App/docs/testing.md).
-Jump to [database documentation](App/docs/db.md).
+* Jump to [testing documentation](App/docs/testing.md).
+* Jump to [database documentation](App/docs/db.md).
 

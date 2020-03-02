@@ -58,7 +58,7 @@
                                 <a class="nav-link" href="{{ url_for('about') }}">About</a>
                             </li>
                         {% endif %}
-                        <!-- If user is authenticated, then show 'profile' an 'log out' links -->
+                        <!-- If user is authenticated, then show 'profile' and 'log out' links -->
                         {% if current_user.is_authenticated  %}
                             <!-- Setting a username variable inside jinja to inject into url_for below -->
                             {% set username = current_user.username %}
@@ -125,6 +125,7 @@
                         {% endfor %}
                     {% endif %}
                     {% endwith %}
+                    <!-- Here goes the main page content for each page -->
                     {% block content %}{% endblock %}
                 </div>
                 <!-- The recent activity sidebar -->
